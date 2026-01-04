@@ -12,3 +12,4 @@ database.db
 test.py
 .env
 chat_history
+test.ipynb
