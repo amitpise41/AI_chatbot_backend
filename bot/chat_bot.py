@@ -15,11 +15,12 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 # --------------------
 # LLM factory
 # --------------------
-def create_llm(api_key: str) -> ChatOpenAI:
+def create_llm(api_key: str, temperature: float = 1.0) -> ChatOpenAI:
     return ChatOpenAI(
         openai_api_key=api_key,
         openai_api_base="http://127.0.0.1:1234/v1",
         model="qwen2-7b-instruct@q5_0",
+        temperature=temperature
     )
 
 # --------------------
