@@ -83,5 +83,9 @@ async def run_graph(messages: str, thread_id=None):
 # --------------------
 if __name__ == "__main__":
     user_input = input("Enter your question: ")
-    result = run_graph(user_input)
+    thread_id = uuid.uuid4()
+    result = run_graph(
+            messages=[user_input],
+            thread_id=thread_id
+        )
     print(result["messages"][-1].content)

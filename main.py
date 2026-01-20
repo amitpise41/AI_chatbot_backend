@@ -109,8 +109,9 @@ async def chats(
 
 @app.post("/chats")
 async def chats(
-    user: Annotated[s.UserView, Depends(security.get_current_user)]
-) -> List[str]:
+    user: Annotated[s.UserView, Depends(security.get_current_user)],
+    session: Session = Depends(get_session)
+) -> Dict[str, str]:
     
     user_dir = f.ensure_user_dir(CHAT_HISTORY_PATH, str(user.user_id))
 
@@ -133,6 +134,22 @@ async def chats(
                 status_code=500,
                 detail="Failed to create new chat thread"
             )
+    
+
+    chat = m.Chat(chat_id=thread_id, chat_path=thread_path)
+
+    session.add(chat)
+    session.commit()
+    session.refresh(chat)
+
+    user_chat_link = m.UserChatLinkTable(
+        user_id_fk=user.user_id,
+        chat_id_fk=chat.chat_id
+    )
+
+    session.add(user_chat_link)
+    session.commit()
+    session.refresh(user_chat_link)
 
     return data
 
@@ -198,6 +215,7 @@ async def chat(
         )
 
     try:
+        messages = f.messages_for_llm(messages)
         graph_result = await run_graph(
             messages=messages,
             thread_id=thread_id

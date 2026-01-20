@@ -84,3 +84,10 @@ def append_message(
             json.dump(data, f, ensure_ascii=False, indent=2)
 
         return data["messages"]
+    
+
+def messages_for_llm(messages):
+    return [
+        {"role": m["role"], "content": m["content"]}
+        for m in messages
+    ]
