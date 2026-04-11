@@ -22,6 +22,7 @@ class UserLogin(BaseModel):
 class ChatBase(SQLModel):
 
     chat_path: str
+    heading: str = ""
 
 
 class TokenData(UserBase):

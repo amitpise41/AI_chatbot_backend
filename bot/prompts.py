@@ -5,10 +5,10 @@ AGENT_PROMPT=SystemMessage(
 )
 
 
-def get_title_prompt(conversation):
+def get_heading_prompt(messages):
     
-    title_prompt = f"""
-    You are generating a short chat thread title by looking at the conversation below between user and AI assistant.
+    heading_prompt = f"""
+    You are generating a short chat thread heading by looking at the conversation below between user and AI assistant.
 
     Rules:
     - Max 6 words
@@ -17,7 +17,7 @@ def get_title_prompt(conversation):
     - Use title case
 
     Conversation:
-    {conversation}
+    {messages}
     """
 
-    return title_prompt
+    return heading_prompt

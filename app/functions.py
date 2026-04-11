@@ -46,7 +46,8 @@ def new_thread(
 
     data = {
         "thread_id": str(thread_id),
-        "messages": []
+        "messages": [],
+        "heading": ""
     }
 
     with open(thread_path, "w", encoding="utf-8") as f:
@@ -55,35 +56,36 @@ def new_thread(
     return {"thread_id": thread_id}
 
 
-def append_message(
-    thread_path: str,
-    thread_id: str,
-    role: str,
-    content: str
-) -> List[Dict]:
-    lock = FileLock(f"{thread_path}.lock")
+# def append_message(
+#     thread_path: str,
+#     thread_id: str,
+#     role: str,
+#     content: str
+# ) -> List[Dict]:
+#     lock = FileLock(f"{thread_path}.lock")
 
-    with lock:
-        data = safe_load_json(thread_path)
+#     with lock:
+#         data = safe_load_json(thread_path)
 
-        if not data:
-            data = {
-                "thread_id": thread_id,
-                "messages": []
-            }
+#         if not data:
+#             data = {
+#                 "thread_id": thread_id,
+#                 "messages": [],
+#                 "heading": ""
+#             }
 
-        message = {
-            "role": role,
-            "content": content,
-            "timestamp": datetime.now(IST).isoformat()
-        }
+#         message = {
+#             "role": role,
+#             "content": content,
+#             "timestamp": datetime.now(IST).isoformat()
+#         }
 
-        data.setdefault("messages", []).append(message)
+#         data.setdefault("messages", []).append(message)
 
-        with open(thread_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+#         with open(thread_path, "w", encoding="utf-8") as f:
+#             json.dump(data, f, ensure_ascii=False, indent=2)
 
-        return data["messages"]
+#         return data["messages"]
     
 
 def messages_for_llm(messages):
